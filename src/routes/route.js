@@ -5,32 +5,94 @@ const formetter = require("../validator/formetter.js")
 const lodash = require("lodash");
 const router = express.Router();
 
-router.get('/test-me', function (req, res) {
-    // logger.well()
-    // helper.printDate()
-    // helper.printMonth()
-    // helper.batch1()
-    // formetter.lowText()
-    // formetter.uppText()
+router.get('/movies', function (req, res) {
 
-    let _ = require("lodash");
-    let months = ["January","february","march","april","may","june","july","august","september","october","november","december"]
-    console.log (_.chunk(months,4))
+    let movies = ["3 idiots", "super 30", "Bahubali", "Bahubali 2", "RR", "Chichore"]
 
-    const _ = require('lodash');
-      let Odd_num = [1,3,5,7,9,11,13,15,17,19]
-  console.log(_.tail(Odd_num));
+    res.send(movies)
 
-
-    const _ = require('lodash');
-    let dublicate = _.union([1,3,4,5,6,7,7,78],[1,2,2,3,4,5],[3,4,4,4,5,6,7,7],[4,4,4,5,6,7,7] ,[0,0,9,8,6,6]);
-    console.log(dublicate)
-
-
-
-
-    res.send('My first ever api!')
 });
+
+
+
+
+router.get('/movies/:indexNumber', function (req, res) {
+    let movies = ["3 idiots", "super 30", "Bahubali", "Bahubali 2", "RR", "Chichore"]
+    let index = req.params.indexNumber;
+    console.log(movies[index])
+    res.send(movies[index]);
+
+})
+
+
+
+
+router.get('/movies/:indexNumber', function (req, res) {
+    let movies = ["3 idiots", "super 30", "Bahubali", "Bahubali 2", "RR", "Chichore"]
+    let index = req.params.indexNumber;
+    if (index < 6) {
+        res.send(movies[index]);
+        console.log(movies[index])
+    } else {
+        res.send("use a valid index");
+        console.log("use a valid index")
+    }
+
+
+})
+
+
+
+
+router.get('/films', function (req, res) {
+    let movies = [{
+        "id": 1,
+        "name": "3 idiots"
+    }, {
+        "id": 2,
+        "name": "super 30"
+    }, {
+        "id": 3,
+        "name": "Bahubali"
+    }, {
+        "id": 4,
+        "name": "Bahubali 2"
+    }]
+
+    res.send(movies)
+
+})
+
+
+
+
+router.get('/films/:indexNumber', function (req, res) {
+    let movies = [{
+        "id": 1,
+        "name": "3 idiots"
+    },
+    {
+        "id": 2,
+        "name": "super 30"
+    },
+    {
+        "id": 3,
+        "name": "Bahubali"
+    },
+    {
+        "id": 4,
+        "name": "Bahubali 2"
+    }]
+
+    let index = req.params.indexNumber;
+    if (index > movies.length) {
+        return res.send("no movie exist with this id")
+    } else {
+        res.send(movies[index])
+    }
+})
+
+
 
 module.exports = router;
 // adding this comment for no reason
