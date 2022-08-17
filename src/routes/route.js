@@ -10,7 +10,28 @@ router.get("/test-me", function (req, res) {
 
 router.post("/createUser", UserController.createUser  )
 
-router.get("/getUsersData", UserController.getUsersData)
+//router.get("/getUsersData", UserController.getUsersData)
+
+router.get("/bookList", UserController.bookList)
+
+router.post("/getBooksInYear", UserController.getBooksInYear)
+
+router.post("/getPerticularBooks", UserController.getPerticularBooks)
+
+router.get("/getXINRBooks", UserController.getXINRBooks)
+
+router.get("/getRandomBooks", UserController.getRandomBooks)
+
+// router.get("/getUsersData", UserController.getUsersData)
+
+// router.post("/createUser", UserController.createUser  )
+
+// router.get("/getUsersData", UserController.getUsersData)
+
+// router.post("/createUser", UserController.createUser  )
+
+// router.get("/getUsersData", UserController.getUsersData)
+
 
 router.post("/createBook", BookController.createBook  )
 
