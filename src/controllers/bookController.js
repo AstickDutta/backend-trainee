@@ -1,12 +1,12 @@
-const { count } = require("console")
-const bookModel= require("../modules/bookModel")
+// const { count } = require("console")
+// const bookModel= require("../modules/bookModel")
 
-const createBook= async function (req, res) {
-    let data= req.body
+// const createBook= async function (req, res) {
+//     let data= req.body
 
-    let savedData= await bookModel.create(data)
-    res.send({msg: savedData})
-}
+//     let savedData= await bookModel.create(data)
+//     res.send({msg: savedData})
+// }
 
 // const getBooksData= async function (req, res) {
 //     let allBooks= await BookModel.find( {authorName : "HO" } )
