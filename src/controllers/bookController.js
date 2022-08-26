@@ -5,17 +5,6 @@ const mongoose = require("mongoose")
 const publisherModel = require("../models/publisherModel")
 
 
-
-// const createBook = async function (req, res) {
-// let book = req.body
-//     let bookCreated = await bookModel.create(book)
-//     res.send({data: bookCreated});
-
-// const getBooksData= async function (req, res) {
-//         let books = await bookModel.find()
-//         res.send({data: books})
-//     }
-
 const newCreateBook = async function (req, res) {
     let book1 = req.body
     let author = req.body.author;
@@ -45,7 +34,7 @@ const bookRef = async function (req, res) {
 
 
 const upBook = async function (req, res) {
-    let newBook = await publisherModel.find({ $or: [{ name: "Penguin" }, { name: "HarperCollins" }] }).select({ id: 1 });
+    let newBook = await publisherModel.find({ $or: [{ name: "Penguin" }, { name: "HarperCollins" }] }).select({ _id : 1 });
     let newBook1 = newBook.map(x => x["_id"]);
     let updateBook = await bookModel.updateMany({ publisher: { $in: (newBook1) } }, { $set: { isHardCover: true } }, { new: true });
     return res.send({ msg: updateBook });
@@ -61,9 +50,15 @@ const priceUp = async function(req, res){
 }
 
 
-//module.exports.createBook = createBook;
-// module.exports.getBooksData = getBooksData; 
+const aggbook = async function (req, res){
+
+    let agg = bookModel.aggregate ([{$group : {_id : "$author_id", totalPrice : {$sum : "$price"}}},{$sort : {price : -1}}]);
+
+    return res.send({msg : agg});
+}
+
 module.exports.newCreateBook = newCreateBook;
 module.exports.bookRef = bookRef
 module.exports.upBook = upBook
 module.exports.priceUp = priceUp
+module.exports.aggbook  = aggbook

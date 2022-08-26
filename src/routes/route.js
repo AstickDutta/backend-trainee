@@ -26,6 +26,8 @@ router.get("/upBook", bookController.upBook)
 
 router.get("/priceUp", bookController.priceUp)
 
+router.get("/aggbook", bookController.aggbook)
+
 //router.get("/getBooksWithAuthorDetails", bookController.getBooksWithAuthorDetails)
 
 module.exports = router;
