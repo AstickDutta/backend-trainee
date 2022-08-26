@@ -19,7 +19,16 @@ const commonHandler = async function(req, res, next) {
     //res.send({status: true, msg: "Hi there!"})
 }
 
+
+const midCode = async function(req, res, next){
+    let midbody = req.body
+console.log("this is my midware code")
+next()
+}
+
+
 module.exports.commonHandler = commonHandler
+module.exports.midCode = midCode
 
 
 
