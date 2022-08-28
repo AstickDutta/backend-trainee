@@ -5,8 +5,10 @@ const productcontrollers = require("../controllers/productController");
 const orderController = require("../controllers/orderController");
 const userMiddleware1 = require("../middlewares/userMiddleware");
 
-router.post ("/userCreate",userMiddleware1.isFreeMid,userController.userCreate)
+router.post("/userCreate", userMiddleware1.isFreeMid, userController.userCreate);
+
 router.post("/productCreate", productcontrollers.productCreate);
-router.post("/createOrder", orderController.createOrder);
+
+router.post("/createOrder", userMiddleware1.isFreeMid, orderController.createOrder);
 
 module.exports = router;

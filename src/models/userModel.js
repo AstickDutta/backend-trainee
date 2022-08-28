@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema( {
+const userSchema = new mongoose.Schema({
     name: String,
-	balance: {
-        type : Number,
-        default : 100 
+    balance: {
+        type: Number,
+        default: 100
     },
-	address: String,
-	age: Number,
-    gender : ["male", "female", "other"]
+    address: String,
+    age: Number,
+    gender: ["male", "female", "other"]
 
 }, { timestamps: true });
 

@@ -1,48 +1,54 @@
+const { count } = require("console");
 const orderModel = require("../models/orderModel");
 const productModel = require("../models/productModel");
 const userModel = require("../models/userModel");
 
-
 const createOrder = async function (req, res) {
-    let data = req.body
-    let UA = data.userId
-    let PA = data.productId
-    let freeuser = data.isFreeAppUser
-    let valiedUser = await userModel.findById(UA).select({ _id: 1 });
-    let valiedProduct = await productModel.findById(PA).select({ _id: 1 });
-    if (!UA || !valiedUser) {
-        let msgUA = !UA ? "UserID is Required" : "Enter a valied User ID";
-        return res.send(msgUA);
-    } else if (!PA || !valiedProduct) {
-        let msgPA = !PA ? "Product ID is Required" : "Enter a valied Product ID";
-        return res.send(msgPA);
-    } 
-    if (req.headers.isfreeappuser === 'true') {
-        console.log("This is freeAppUser");
+    let user = req.body.userId;
+    let userfind = await userModel.findById(user).select({ _id: 1 });
+    if (!user) {
+        return res.send("user id is not present");
+    } if (!userfind) {
+        return res.send("user id is not valid");
+    }
+    let product = req.body.productId;
+    let productfind = await productModel.findById(product).select({ _id: 1 })
 
-        //let freeApp = req.headers.isfreeappUser
-        req.body.amount = 0;
-        let order = await orderModel.create(data);
-        res.send({ msg: order });
+    if (!product) {
+        return res.send("product id is not present");
 
-        let orderAmount = await productModel.findById(PA).select({ price: 1, _id: 0 });
-        let amount = orderAmount.price
-        let userBalance = await userModel.findById(UA).select({ balance: 1, _id: 0 });
-        let balance = userBalance.balance
-        if (balance > amount && req.headers.isfreeappuser === 'false') {
-            let savedData = await orderModel.create(data);
-            let updateUser = await userModel.findByIdAndUpdate({ _id: UA }, { $inc: { balance: -amount } }, { new: true }).select({ balance: 1, _id: 0 });
-            console.log(updateUser);
-            return res.send({ msg: savedData });
-        }
-        else if (balance < amount && req.headers.isfreeappuser === 'false')
-        { return res.send({ msg: "Insufficiant balance" }) };
+    } if (!productfind) {
+        return res.send("product id is not valid");
     }
 
-    // let savedData = await orderModel.create(data);
-    // res.send({ msg: savedData });
+    //   user and product id validation
+
+    let users = req.headers.isfreeappuser;
+    let user1 = JSON.parse(users)
+    let body2 = req.body;
+    let balenc = await userModel.findById(user).select({ balance : 1, _id: 0 });
+    let balenc1 = balenc.balance;
+    let balenc2 = await productModel.findById(product).select({ price: 1, _id: 0 });
+    let pric = balenc2.price;
+
+    if (user1 === true) {
+        req.body.amount = 0;
+        let body1 = await orderModel.create(body2);
+        return res.send(body1);
+
+    } else if (user1 === false && balenc1 >= pric) {
+        let u = await userModel.updateOne({ _id: user }, { $inc: { balance: -pric } }, { new : true }).select({ balance: 1, _id: 0 });
+ 
+        //console.log(u);
+
+        req.body.amount = pric;
+        let body3 = await orderModel.create(body2);
+        return res.send(body3);
+    }
+    return res.send("Users has insufficient balance");
 }
 
-
-
 module.exports.createOrder = createOrder
+
+
+
