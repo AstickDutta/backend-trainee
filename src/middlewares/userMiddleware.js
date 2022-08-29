@@ -1,15 +1,18 @@
+const jwt = require("jsonwebtoken")
+
 
 const isFreeMid = async function (req, res, next) {
-    let headers = req.headers.isfreeappuser;
-    //let f = JSON.parse(headers);
-    if (headers) {
-        req.body.isFreeAppUser = headers;
-        next();
-    } else {
-        return res.send("the request is missing a mandatory header");
-    }
-}
+    let head = req.headers["x-Auth-Token"];
+    if (!head) 
+    head = req.headers["x-auth-token"]
+    if (!head) return res.send({ status: false, msg: "token is not present" });
+    console.log(head);
 
+    let validtoken = jwt.verify(head, "Winners-Never-Quit");
+    if (!validtoken) return res.send({ status: false, msg: "the token is not valid" });
+    next();
+
+}
 
 
 module.exports.isFreeMid = isFreeMid
